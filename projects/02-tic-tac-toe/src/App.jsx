@@ -26,7 +26,11 @@ function App() {
   const [turn, setTurn] = useState(TURNS.X)
   
   const updateBoard = (index) => {
-    const newBoard = [... board]
+    //no actualizamos esta posición si ya tiene algo
+    if(board[index]) return
+
+    /* los valores de las props deben ser inmutables no debemos cambiar sus valores por eso creamos una nueva constante donde almacenamos el nuevo valor */
+    const newBoard = [...board] /* spread and rest operator */
     newBoard[index] = turn
     setBoard(newBoard)
 
