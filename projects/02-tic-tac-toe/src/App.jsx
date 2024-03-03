@@ -51,6 +51,17 @@ function App() {
     //si no hay ganador
     return null
   }
+
+  //Reiniciamos el juego una vez se ha terminado
+  const resetGame = () => {
+    setBoard(Array(9).fill(null))
+    setTurn(TURNS.X)
+    setWinner(null)
+  }
+
+  const checkEndGame = (newBoard) => {
+    return newBoard.every((square) => square !== null)
+  }
   
   const updateBoard = (index) => {
     //no actualizamos esta posición si ya tiene algo y tampoxo actializamos el board si hay un ganador
@@ -70,22 +81,25 @@ function App() {
     const newWinner = checkWinner(newBoard)
     if (newWinner){
       setWinner(newWinner) //la actualización de los estados en REACT son asíncronos
+    } else if (checkEndGame(newBoard)){
+      setWinner(false) //empate
     }
   } 
 
   return (
     <main className='board'>
        <h1>Tic Tac Toe</h1>
+       <button onClick={resetGame}>Reset the Game</button>
        <section className="game">
         {
-          board.map((_, index) => {
+          board.map((square, index) => {
             return (
               <Square 
                 key={index} 
                 index={index} 
                 updateBoard={updateBoard} /* pasamos la función como parámetro porque queremos ejecutar la función cuando se haga click y no cuando se renderice */
               >
-                {board[index]}
+                {square}
               </Square>
             )
           })
@@ -114,7 +128,7 @@ function App() {
               </header>
 
               <footer>
-                <button>Empezar de nuevo</button>
+                <button onClick={resetGame}>Empezar de nuevo</button>
               </footer>
             </div>
           </section>
